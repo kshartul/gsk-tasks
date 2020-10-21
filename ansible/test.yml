@@ -1,0 +1,17 @@
+---
+  - name: validate ec2 instance-01 deployment
+    uri:
+        url: http://35.153.159.204:8080/
+        method: POST
+        body: "{{ lookup('file','ansible-logo.jpg') }}"
+        body_format: json
+        headers:
+        Content-Type: "application/json"
+  - name: validate ec2 instance-01 deployment
+    uri:
+        url: http://54.157.171.42:8080/
+        method: POST
+        body: "{{ lookup('file','ansible-logo.jpg') }}"
+        body_format: json
+        headers:
+        Content-Type: "application/json"

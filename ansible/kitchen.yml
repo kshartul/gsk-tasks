@@ -1,0 +1,26 @@
+---
+    driver:
+      name: ec2
+    
+    provisioner:
+      name: ansible_playbook
+      hosts: test-kitchen
+      playbook: ./deployment.yml
+    
+    verifier:
+      name: inspec
+    
+    platforms:
+      - name: ubuntu-16:04
+        driver_config:
+          ssh_key: "~/.ssh/id_rsa"
+          tags:
+            - inspec-testing
+          region: fra1
+          size: 1gb
+          private_networking: false
+        verifier:
+          inspec_tests:
+            - test/integrations/default
+    suites:
+      - name: default

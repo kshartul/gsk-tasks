@@ -1,0 +1,62 @@
+---
+  - name: Install docker, pull nginx image, run nginx container with sample content
+    hosts: servers
+    remote_user: ubuntu
+    become: yes
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+      container_name: nginx
+      container_image: nginx
+      container_image_tag: latest
+    gather_facts: no
+    pre_tasks:
+      - name: 'install python'
+        raw: 'sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install python3 python3-apt'
+    tasks:
+      - name: Install aptitude using apt
+        apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  
+      - name: Install required system packages
+        apt: name={{ item }} state=latest update_cache=yes
+        loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools' ]
+  
+      - name: Add Docker GPG apt Key
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+  
+      - name: Add Docker Repository
+        apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu bionic stable
+          state: present
+  
+      - name: Update apt and install docker-ce
+        apt: update_cache=yes name=docker-ce state=latest
+  
+      - name: Install Docker Module for Python
+        pip:  
+          name: docker
+  
+      - name: Pull default Docker image
+        docker_image:
+          source: pull
+          name: "{{ container_image }}"
+          tag: "{{ container_image_tag }}"
+  
+      - name: Copy content directory for webserver
+        copy:
+          src: ./www
+          dest: /var
+          mode: '0755'
+          owner: www-data
+          group: www-data
+  
+      - name: Start Nginx container
+        docker_container:
+          name: "{{ container_name }}"
+          image: "{{ container_image }}"
+          volumes:
+           - "/var/www:/usr/share/nginx/html:ro"
+          published_ports:
+           - "80:80"
+          state: started
