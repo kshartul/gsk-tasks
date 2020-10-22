@@ -2,7 +2,7 @@
 
 Terraform : Setup two AWS EC2 ubuntu16.04-xenial-amd64-server instances with Secuirty Group and AWS Elastic Load Balancer.
 
-Ansible : Donwload Package, docker, nginx, Enable Services, validate infrastrucuture readiness for the application deployment
+Ansible : Provision the Packages, docker, nginx, Enable Services, validate infrastrucuture readiness for the application deployment
 
 #Navigate to terraform folder
 
