@@ -12,7 +12,7 @@ terraform init: Initialize the modules and setup configuration
 
 terraform plan: Description on the action items and To-Do
 
-terraform apply:Perform the action items to provision the servers, instances, applications, security groups, vpc, cidr, ingress/outgress ruls
+terraform apply:Perform the action items to provision the servers, instances, applications, security groups, vpc, cidr, ingress/outgress rules
 
 terraform destroy: Delete all - at the end
 
